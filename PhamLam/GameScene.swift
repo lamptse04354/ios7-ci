@@ -14,15 +14,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let fly1 = SKSpriteNode(imageNamed: "fly-1-1.png")
     let fly2 = SKSpriteNode(imageNamed: "fly-1-1.png")
     let Margin : CGFloat = 20
-    var scoreLabel : UILabel!
     
+    var scoreLabel : UILabel!
     var heathLabel : UILabel!
+    var stageLabel : UILabel!
+    
     
     var flyShootCount : Int = 0
     var fliesMoveCount : Int = 0
     
-    var score : Int = 0
+    var currentScore : Int = 0
     var playerHealth : Int = 10
+    var fliesHealth2 : Int = 2
+    var fliesHealth3 : Int = 3
+    
+    
+    var stage : Double = 0
+    var playerNumberOfBullet : Int = 1
+    
     
     var playerBullet : [SKSpriteNode] = []
     var flies : [SKSpriteNode] = []
@@ -33,6 +42,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let fly1Texture1 = SKTexture(imageNamed: "fly-1-1.png")
     let fly1Texture2 = SKTexture(imageNamed: "fly-1-2.png")
+    let fly2Texture1 = SKTexture(imageNamed: "fly-2-1.png")
+    let fly2Texture2 = SKTexture(imageNamed: "fly-2-2.png")
+    let fly3Texture1 = SKTexture(imageNamed: "fly-3-1.png")
+    let fly3Texture2 = SKTexture(imageNamed: "fly-3-2.png")
+    let fly3Texture3 = SKTexture(imageNamed: "fly-3-3.png")
+    
     let explosionTexture0 = SKTexture(imageNamed: "explosion-0.png")
     let explosionTexture1 = SKTexture(imageNamed: "explosion-1.png")
     let explosionTexture2 = SKTexture(imageNamed: "explosion-2.png")
@@ -42,7 +57,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let spaceshipBack = SKEmitterNode(fileNamed: "spacship.sks")
     let playerAttackedSks = SKEmitterNode(fileNamed: "plahyerattacked.sks")
     
-    
+    let randomXPosition = GKRandomDistribution(lowestValue: 50, highestValue: Int(UIScreen.main.bounds.width) - 50)
     
     //textures -> images
     
@@ -59,14 +74,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         func addSpaceshipBackFire() -> Void {
-                spaceshipBack?.position.y = playerNode.position.y
-                spaceshipBack?.position.x = playerNode.position.x
-                spaceshipBack?.particlePositionRange = CGVector(dx: 0.001, dy: 0.05)
-                
-                addChild(spaceshipBack!)
+            spaceshipBack?.position.y = playerNode.position.y
+            spaceshipBack?.position.x = playerNode.position.x
+            spaceshipBack?.particlePositionRange = CGVector(dx: 0.001, dy: 0.05)
+            
+            addChild(spaceshipBack!)
         }
-
-    
+        
+        
         anchorPoint = CGPoint(x: 0, y: 0)
         configPhysics()
         addPlayer()
@@ -76,13 +91,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         scoreLabel = UILabel(frame: CGRect(x: 0, y: self.size.height - 20, width: 100, height: 20 ))
         scoreLabel.textColor = UIColor.red
-        scoreLabel.text = "Score : \(score)"
+        scoreLabel.text = "Score : \(currentScore)"
         self.view?.addSubview(scoreLabel)
         
         heathLabel = UILabel(frame: CGRect(x: 0 , y: self.size.height - 40, width: 100, height: 20))
         heathLabel.textColor = UIColor.blue
         heathLabel.text = "Heath : \(playerHealth)"
         self.view?.addSubview(heathLabel)
+        
+        stageLabel = UILabel(frame: CGRect(x: self.size.width - 110, y: self.size.height - 30, width: 100, height: 20))
+        stageLabel.textColor = UIColor.green
+        stageLabel.text = "Stage : \(stage)"
+        self.view?.addSubview(stageLabel)
         
     }
     
@@ -104,8 +124,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             nodeA.removeFromParent()
             nodeB.removeFromParent()
             addExplosion(position: nodeA.position, size : 0.5, duration : 0.01)
-            score += 1
-            scoreLabel.text = "Score : \(score)"
+            currentScore += 1
+            scoreLabel.text = "Score : \(currentScore)"
         }
         
         if (bodyA.categoryBitMask | bodyB.categoryBitMask) == 12 {
@@ -113,11 +133,52 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             playerNode.run(SKAction.playSoundFileNamed("player-explosion.wav", waitForCompletion: false))
             if playerHealth > 1 {
                 playerHealth -= 1
-                heathLabel.text = "Heath : \(playerHealth)"
+                heathLabel.text = "Heatlh : \(playerHealth)"
             }else{
-                heathLabel.text = "Heath : 0"
+                heathLabel.text = "Health : 0"
                 self.view?.presentScene(SKScene(fileNamed: "MyScene"))
             }
+        }
+        
+        if (bodyA.categoryBitMask | bodyB.categoryBitMask) == 20 {
+            addExplosion(position: playerNode.position, size : 1, duration : 0.01  )
+            playerNode.run(SKAction.playSoundFileNamed("player-explosion.wav", waitForCompletion: false))
+            
+            if playerHealth > 2 {
+                playerHealth -= 2
+                heathLabel.text = "Heath : \(playerHealth)"
+            }else{
+                heathLabel.text = "Health : 0"
+                self.view?.presentScene(SKScene(fileNamed: "MyScene"))
+            }
+        }
+        
+        if (bodyA.categoryBitMask | bodyB.categoryBitMask) == 36 {
+            if playerNumberOfBullet < 7 {
+                playerNumberOfBullet += 2
+            }
+            if bodyA.categoryBitMask == 32 {
+                nodeA.removeFromParent()
+            }else{
+                nodeB.removeFromParent()
+            }
+
+        }
+        
+        if (bodyA.categoryBitMask | bodyB.categoryBitMask) == 65 {
+            nodeA.removeFromParent()
+            nodeB.removeFromParent()
+            addExplosion(position: nodeA.position, size : 0.5, duration : 0.01)
+            currentScore += 2
+            scoreLabel.text = "Score : \(currentScore)"
+        }
+        
+        if (bodyA.categoryBitMask | bodyB.categoryBitMask) == 129 {
+            nodeA.removeFromParent()
+            nodeB.removeFromParent()
+            addExplosion(position: nodeA.position, size : 0.5, duration : 0.01)
+            currentScore += 3
+            scoreLabel.text = "Score : \(currentScore)"
         }
     }
     
@@ -135,52 +196,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         playerNode.position = CGPoint(x: self.size.width/2, y: 20)
         playerNode.physicsBody = SKPhysicsBody(rectangleOf: playerNode.size)
         playerNode.physicsBody?.collisionBitMask = 0
-        playerNode.physicsBody?.categoryBitMask = 4 //1000
+        playerNode.physicsBody?.categoryBitMask = 4
         playerNode.physicsBody?.contactTestBitMask = 8
         addChild(playerNode)
     }
     
     func addFlies() -> Void {
-        //        let flyWidth : CGFloat = 28
-        //        let flySpace : CGFloat = 10
-        //        let flyMid : CGFloat = size.width / 2
-        //        let random = Int(arc4random_uniform(UInt32(7)))
-        //        var sp : Int = 0
-        //
-        //        if (random % 2) == 0 {
-        //            sp = random / 2
-        //        }else{
-        //            sp = ((random - 1) / 2) + 1
-        //        }
-        //        for flyIndex in 0...random{
-        //            let SPACE : CGFloat = flyWidth + flySpace
-        //            let flyX : CGFloat = flyMid + (CGFloat(flyIndex) - CGFloat(sp)) * SPACE
-        //            let flyY : CGFloat = self.size.height - 5
-        //            let flyNode = SKSpriteNode(imageNamed: "fly-1-1.png")
-        //            flyNode.name = FLIES_NAME
-        //            flyNode.anchorPoint = CGPoint(x : 0.5, y : 1)
-        //            flyNode.position = CGPoint(x: flyX , y: flyY )
-        //            flyNode.physicsBody = SKPhysicsBody(rectangleOf: flyNode.size)
-        //            flyNode.physicsBody?.velocity = CGVector(dx: 0, dy: -50)
-        //            flyNode.physicsBody?.collisionBitMask = 0
-        //            flyNode.physicsBody?.linearDamping = 0
-        //            flyNode.physicsBody?.categoryBitMask = 2 //000010
-        //            flyNode.physicsBody?.contactTestBitMask = 1
-        //
-        //            flyNode.run(.repeatForever(.animate(with: [fly1Texture1, fly1Texture2], timePerFrame: 0.1)))
-        //            addChild(flyNode)
-        //            flies.append(flyNode)
-        //        }
+
         let flyNode = SKSpriteNode(imageNamed: "fly-1-1")
-        let randomFlyPosition = GKRandomDistribution(lowestValue: 50, highestValue: Int(self.size.width) - 50)
-        let flyPosition = CGFloat(randomFlyPosition.nextInt())
+        let randomPosition = CGFloat(randomXPosition.nextInt())
         
-        flyNode.position = CGPoint(x: flyPosition, y: self.size.height)
+        flyNode.position = CGPoint(x: randomPosition, y: self.size.height)
         flyNode.physicsBody = SKPhysicsBody(rectangleOf: flyNode.size)
         flyNode.physicsBody?.velocity = CGVector(dx: 0, dy: -50)
         flyNode.physicsBody?.collisionBitMask = 0
         flyNode.physicsBody?.linearDamping = 0
-        flyNode.physicsBody?.categoryBitMask = 2 //000010
+        flyNode.physicsBody?.categoryBitMask = 2
         flyNode.physicsBody?.contactTestBitMask = 1
         
         flyNode.run(.repeatForever(.animate(with: [fly1Texture1, fly1Texture2], timePerFrame: 0.1)))
@@ -188,6 +219,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(flyNode)
         flies.append(flyNode)
         
+    }
+    
+    func addFlies2() -> Void {
+        let flyNode = SKSpriteNode(imageNamed: "fly-2-1")
+        let randomPosition = CGFloat(randomXPosition.nextInt())
+        
+        flyNode.position = CGPoint(x: randomPosition, y: self.size.height)
+        flyNode.physicsBody = SKPhysicsBody(rectangleOf: flyNode.size)
+        flyNode.physicsBody?.velocity = CGVector(dx: 0, dy: -50)
+        flyNode.physicsBody?.collisionBitMask = 0
+        flyNode.physicsBody?.linearDamping = 0
+        flyNode.physicsBody?.categoryBitMask = 64
+        flyNode.physicsBody?.contactTestBitMask = 1
+        
+        flyNode.run(.repeatForever(.animate(with: [fly2Texture1, fly2Texture2], timePerFrame: 0.1)))
+        flyNode.run(SKAction.playSoundFileNamed("attack-1.wav", waitForCompletion: false))
+        addChild(flyNode)
+        flies.append(flyNode)
+    }
+    
+    func addFlies3() -> Void {
+        let flyNode = SKSpriteNode(imageNamed: "fly-3-1")
+        let randomPosition = CGFloat(randomXPosition.nextInt())
+        
+        flyNode.position = CGPoint(x: randomPosition, y: self.size.height)
+        flyNode.physicsBody = SKPhysicsBody(rectangleOf: flyNode.size)
+        flyNode.physicsBody?.velocity = CGVector(dx: 0, dy: -50)
+        flyNode.physicsBody?.collisionBitMask = 0
+        flyNode.physicsBody?.linearDamping = 0
+        flyNode.physicsBody?.categoryBitMask = 128
+        flyNode.physicsBody?.contactTestBitMask = 1
+        
+        flyNode.run(.repeatForever(.animate(with: [fly3Texture1, fly3Texture2, fly3Texture3, fly3Texture2], timePerFrame: 0.1)))
+        flyNode.run(SKAction.playSoundFileNamed("attack-1.wav", waitForCompletion: false))
+        addChild(flyNode)
+        flies.append(flyNode)
     }
     
     func fliesMove(fly : SKSpriteNode, time : Int) {
@@ -211,19 +278,53 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var startTime : TimeInterval = -1
     var fliesStartTime : TimeInterval = -1
     var fliesMoveTime : TimeInterval = -1
+    var fallenTime : TimeInterval = -1
+    var addMoreBulletTime : TimeInterval = -1
+    var score : Int = 0
+    
     
     
     override func update(_ currentTime: TimeInterval) {
         if startTime == -1 {
+            currentScore = 0
             score = 0
+            stage = 1
             startTime = currentTime
             fliesStartTime = currentTime
             fliesMoveTime = currentTime
+            fallenTime = currentTime
+            addMoreBulletTime = currentTime
+            stageLabel.text = "Stage : 1"
+        }
+        if (currentScore - score) > 20 {
+            score = currentScore
+            stage += 1
+            stageLabel.text = "Stage : \(stage)"
+        }
+        if (currentTime - addMoreBulletTime) > 20 {
+            addMoreBullet()
+            addMoreBulletTime = currentTime
         }
         
-        if currentTime - fliesStartTime > 1 {
-            addFlies()
-            fliesStartTime = currentTime
+        if Double((currentTime - fallenTime)) > Double(10 - (0.5 * stage)) {
+            addFallenMeteorite()
+            fallenTime = currentTime
+        }
+        
+        if Double(currentTime - fliesStartTime) > Double(1 - (0.05 * stage)) {
+            if stage < 4 {
+                addFlies()
+                fliesStartTime = currentTime
+            }else if stage < 8{
+                addFlies()
+                addFlies2()
+                fliesStartTime = currentTime
+            }else{
+                addFlies()
+                addFlies2()
+                addFlies3()
+                fliesStartTime = currentTime
+            }
         }
         
         if currentTime - fliesMoveTime > 0.7 {
@@ -237,7 +338,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if currentTime - startTime > 0.5{
-            shoot()
+            shoot(number: playerNumberOfBullet)
             flyShootCount += 1
             if (flyShootCount % 6) == 0 {
                 for fly in self.flies {
@@ -264,19 +365,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func shoot() -> Void {
-        let bulletNode = SKSpriteNode(imageNamed: "bullet-1.png")
-        bulletNode.name = PLAYER_BULLET_NAME
-        bulletNode.position = CGPoint(x: playerNode.position.x, y: playerNode.position.y + playerNode.size.height)
-        bulletNode.physicsBody = SKPhysicsBody(rectangleOf: bulletNode.size)
-        bulletNode.physicsBody?.categoryBitMask = 1
-        bulletNode.physicsBody?.contactTestBitMask = 2
-        bulletNode.physicsBody?.collisionBitMask = 0
-        bulletNode.physicsBody?.velocity = CGVector(dx: 0 , dy: 400)
-        bulletNode.physicsBody?.mass = 0
-        bulletNode.run(SKAction.playSoundFileNamed("player-shoot.wav", waitForCompletion: false))
-        addChild(bulletNode)
-        playerBullet.append(bulletNode)
+    func shoot(number : Int) -> Void {
+        for index in 1...number {
+            let bulletNode = SKSpriteNode(imageNamed: "bullet-1.png")
+            let mid = ((number - 1) / 2) + 1
+            
+            
+            bulletNode.name = PLAYER_BULLET_NAME
+            bulletNode.position = CGPoint(x: playerNode.position.x, y: playerNode.position.y + playerNode.size.height)
+            bulletNode.physicsBody = SKPhysicsBody(rectangleOf: bulletNode.size)
+            bulletNode.physicsBody?.velocity = CGVector(dx: -300 + (300 / mid) * index, dy: 400)
+            bulletNode.physicsBody?.categoryBitMask = 1
+            bulletNode.physicsBody?.contactTestBitMask = 2
+            bulletNode.physicsBody?.collisionBitMask = 0
+            bulletNode.physicsBody?.mass = 0
+            bulletNode.run(SKAction.playSoundFileNamed("player-shoot.wav", waitForCompletion: false))
+            addChild(bulletNode)
+            playerBullet.append(bulletNode)
+        }
         
     }
     
@@ -298,4 +404,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bulletNode.run(SKAction.playSoundFileNamed("shoot.wav", waitForCompletion: false))
         addChild(bulletNode)
     }
+    
+    func addFallenMeteorite() -> Void {
+        let warning = SKSpriteNode(imageNamed: "warning")
+        let meteorite = SKEmitterNode(fileNamed: "meteorite.sks")
+        
+        let randomPosition = CGFloat(randomXPosition.nextInt())
+        
+        warning.anchorPoint = CGPoint(x: 0.5, y: 1)
+        warning.position = CGPoint(x: randomPosition, y: self.size.height - 5)
+        
+        warning.size = CGSize(width: self.size.width * 0.08, height: self.size.height * 0.05)
+        
+        let warningAction = SKAction.sequence([.scale(by: 0.5, duration: 0.25), .wait(forDuration: 0.25), .scale(by: 2, duration: 0.25), .wait(forDuration: 0.25)])
+        
+        meteorite?.position = CGPoint(x: warning.position.x, y: self.size.height + 50)
+        meteorite?.particleSize = CGSize(width: self.size.width * 0.05, height: self.size.height * 0.05)
+        meteorite?.physicsBody = SKPhysicsBody(rectangleOf: (meteorite?.particleSize)!)
+        //        meteorite?.physicsBody?.velocity = CGVector(dx: 0, dy: -1000)
+        meteorite?.physicsBody?.collisionBitMask = 0
+        meteorite?.physicsBody?.isDynamic = true
+        meteorite?.physicsBody?.categoryBitMask = 16
+        meteorite?.physicsBody?.contactTestBitMask = 4
+        
+        warning.run(SKAction.sequence([warningAction, warningAction, warningAction, .removeFromParent()]))
+        meteorite?.run(SKAction.sequence([.wait(forDuration: 3), .move(to: CGPoint(x: warning.position.x, y: -50), duration: 2), .removeFromParent()]))
+        addChild(warning)
+        addChild(meteorite!)
+    }
+    
+    func addMoreBullet() -> Void {
+        let bulletAppend = SKSpriteNode(imageNamed: "bulletappend")
+        
+        bulletAppend.position = CGPoint(x: CGFloat(randomXPosition.nextInt()), y: (self.size.height + 50))
+        bulletAppend.size = CGSize(width: self.size.width * 0.03, height: self.size.height * 0.03)
+        bulletAppend.physicsBody = SKPhysicsBody(rectangleOf: bulletAppend.size)
+        bulletAppend.physicsBody?.collisionBitMask = 0
+        bulletAppend.physicsBody?.isDynamic = true
+        bulletAppend.physicsBody?.categoryBitMask = 32
+        bulletAppend.physicsBody?.contactTestBitMask = 4
+        
+        bulletAppend.run(SKAction.sequence([.move(to: playerNode.position, duration: 4), .removeFromParent()]))
+        addChild(bulletAppend)
+    }
+    
 }

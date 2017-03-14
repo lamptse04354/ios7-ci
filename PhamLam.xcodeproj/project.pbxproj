@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8411134C1E77A7F500ABF8A4 /* meteorite.sks in Resources */ = {isa = PBXBuildFile; fileRef = 8411134B1E77A7F500ABF8A4 /* meteorite.sks */; };
 		8440F0DA1E77131C00800E15 /* attack-1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8440F0D51E77131C00800E15 /* attack-1.wav */; };
 		8440F0DB1E77131C00800E15 /* attack-2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8440F0D61E77131C00800E15 /* attack-2.wav */; };
 		8440F0DC1E77131C00800E15 /* player-explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8440F0D71E77131C00800E15 /* player-explosion.wav */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8411134B1E77A7F500ABF8A4 /* meteorite.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = meteorite.sks; sourceTree = "<group>"; };
 		8440F0D51E77131C00800E15 /* attack-1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "attack-1.wav"; sourceTree = "<group>"; };
 		8440F0D61E77131C00800E15 /* attack-2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "attack-2.wav"; sourceTree = "<group>"; };
 		8440F0D71E77131C00800E15 /* player-explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "player-explosion.wav"; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				84AF8CED1E75347C0055C170 /* Info.plist */,
 				846B63DC1E76B05000210411 /* spacship.sks */,
 				846B63DE1E76BA6300210411 /* background.sks */,
+				8411134B1E77A7F500ABF8A4 /* meteorite.sks */,
 			);
 			path = PhamLam;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 				84AF8CE91E75347C0055C170 /* Assets.xcassets in Resources */,
 				84AF8CEC1E75347C0055C170 /* LaunchScreen.storyboard in Resources */,
 				8440F0DB1E77131C00800E15 /* attack-2.wav in Resources */,
+				8411134C1E77A7F500ABF8A4 /* meteorite.sks in Resources */,
 				8440F0DC1E77131C00800E15 /* player-explosion.wav in Resources */,
 				846B63DF1E76BA6300210411 /* background.sks in Resources */,
 				846B63DD1E76B05000210411 /* spacship.sks in Resources */,
