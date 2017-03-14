@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8423EAFE1E7185D800D18576"
-               BuildableName = "Pham Lam.app"
-               BlueprintName = "Pham Lam"
-               ReferencedContainer = "container:Pham Lam.xcodeproj">
+               BlueprintIdentifier = "84AF8CD71E75347C0055C170"
+               BuildableName = "PhamLam.app"
+               BlueprintName = "PhamLam"
+               ReferencedContainer = "container:PhamLam.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8423EAFE1E7185D800D18576"
-            BuildableName = "Pham Lam.app"
-            BlueprintName = "Pham Lam"
-            ReferencedContainer = "container:Pham Lam.xcodeproj">
+            BlueprintIdentifier = "84AF8CD71E75347C0055C170"
+            BuildableName = "PhamLam.app"
+            BlueprintName = "PhamLam"
+            ReferencedContainer = "container:PhamLam.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -55,10 +55,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8423EAFE1E7185D800D18576"
-            BuildableName = "Pham Lam.app"
-            BlueprintName = "Pham Lam"
-            ReferencedContainer = "container:Pham Lam.xcodeproj">
+            BlueprintIdentifier = "84AF8CD71E75347C0055C170"
+            BuildableName = "PhamLam.app"
+            BlueprintName = "PhamLam"
+            ReferencedContainer = "container:PhamLam.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -74,10 +74,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8423EAFE1E7185D800D18576"
-            BuildableName = "Pham Lam.app"
-            BlueprintName = "Pham Lam"
-            ReferencedContainer = "container:Pham Lam.xcodeproj">
+            BlueprintIdentifier = "84AF8CD71E75347C0055C170"
+            BuildableName = "PhamLam.app"
+            BlueprintName = "PhamLam"
+            ReferencedContainer = "container:PhamLam.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
